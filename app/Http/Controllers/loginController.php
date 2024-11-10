@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class loginController extends Controller
 {
@@ -16,6 +19,9 @@ class loginController extends Controller
         $infoLogin = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+        ],[
+            'email.required' => 'Email harus diisi!!',
+            'password.required' => 'Password tidak boleh kosong'
         ]);
 
         try {

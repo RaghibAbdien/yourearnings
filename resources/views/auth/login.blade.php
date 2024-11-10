@@ -81,7 +81,7 @@
             $('#login').on('submit', function(event) {
                 event.preventDefault();
                 var form = $(this);
-                // Menonaktifkan tombol submit 
+                // Menonaktifkan tombol submit
                 form.find('button[type="submit"]').prop('disabled', true);
 
                 $.ajax({
@@ -101,19 +101,14 @@
                         });
                     },
                     error: function(xhr) {
-                        // Jika validasi gagal, tampilkan pesan kesalahan menggunakan SweetAlert
+                        // Dapatkan objek errors dari response JSON Laravel
                         var errors = xhr.responseJSON.errors;
                         var errorMessage = '';
-
-                        if (Array.isArray(errors)) {
-                            // Jika errors adalah array (validasi gagal)
-                            $.each(errors, function(index, value) {
-                                errorMessage += value + '<br>';
+                        $.each(errors, function(field, messages) {
+                            messages.forEach(function(message) {
+                                errorMessage += message + '<br>';
                             });
-                        } else {
-                            // Jika errors adalah string (autentikasi gagal)
-                            errorMessage = errors;
-                        }
+                        });
 
                         Swal.fire({
                             icon: 'error',
@@ -121,7 +116,7 @@
                             html: errorMessage
                         });
 
-                        // Mengaktifkan kembali tombol submit 
+                        // Aktifkan kembali tombol submit
                         form.find('button[type="submit"]').prop('disabled', false);
                     }
                 });
